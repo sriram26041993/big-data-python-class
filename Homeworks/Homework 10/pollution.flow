@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "cells": [
+    {
+      "type": "cs",
+      "input": "assist"
+    },
+    {
+      "type": "cs",
+      "input": "importFiles"
+    },
+    {
+      "type": "cs",
+      "input": "importFiles [ \"C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.train.csv\",\"C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.test.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "setupParse source_frames: [ \"nfs:\\\\C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.train.csv\",\"nfs:\\\\C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.test.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "parseFiles\n  source_frames: [\"nfs:\\\\C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.train.csv\",\"nfs:\\\\C:\\\\Users\\\\srira\\\\Desktop\\\\pollution.test.csv\"]\n  destination_frame: \"pollution_train1.hex\"\n  parse_type: \"CSV\"\n  separator: 44\n  number_columns: 14\n  single_quotes: false\n  column_names: [\"City\",\"NO2 Mean\",\"NO2 1st Max Value\",\"NO2 1st Max Hour\",\"NO2 AQI\",\"O3 1st Max Value\",\"O3 1st Max Hour\",\"O3 AQI\",\"SO2 1st Max Value\",\"SO2 1st Max Hour\",\"SO2 AQI\",\"CO 1st Max Value\",\"CO 1st Max Hour\",\"CO AQI\"]\n  column_types: [\"Enum\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\",\"Numeric\"]\n  delete_on_done: true\n  check_header: 1\n  chunk_size: 5095"
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"pollution_train1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "predict frame: \"pollution_train1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "predict model: \"deeplearning-087cba28-0837-4231-a7ad-9b8bd3be629e\", frame: \"pollution_train1.hex\", predictions_frame: \"prediction-79df949e-ffff-4d1d-bb6e-27c43f9fb1f6\""
+    },
+    {
+      "type": "cs",
+      "input": "assist buildModel, null, training_frame: \"pollution_train1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "buildModel 'kmeans', {\"model_id\":\"kmeans-f36b842c-b1bc-4ba7-b9b8-429be95919a4\",\"training_frame\":\"pollution_train1.hex\",\"validation_frame\":\"pollution_test1.hex\",\"nfolds\":0,\"ignored_columns\":[],\"ignore_const_cols\":true,\"k\":1,\"estimate_k\":false,\"max_iterations\":10,\"standardize\":true,\"init\":\"Furthest\",\"score_each_iteration\":false,\"seed\":-1,\"max_runtime_secs\":0,\"categorical_encoding\":\"AUTO\"}"
+    },
+    {
+      "type": "cs",
+      "input": "getModel \"kmeans-f36b842c-b1bc-4ba7-b9b8-429be95919a4\""
+    },
+    {
+      "type": "cs",
+      "input": "predict model: \"kmeans-f36b842c-b1bc-4ba7-b9b8-429be95919a4\""
+    },
+    {
+      "type": "cs",
+      "input": "predict model: \"kmeans-f36b842c-b1bc-4ba7-b9b8-429be95919a4\", frame: \"pollution_test1.hex\", predictions_frame: \"prediction-f7173426-94df-43bb-88c8-487c59a82fc3\""
+    },
+    {
+      "type": "cs",
+      "input": "assist buildModel, null, training_frame: \"pollution_train1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "buildModel 'deeplearning', {\"model_id\":\"deeplearning-43818188-8c4b-4ef9-b3fb-22562fb902d9\",\"training_frame\":\"pollution_train1.hex\",\"validation_frame\":\"pollution_test1.hex\",\"nfolds\":0,\"response_column\":\"CO AQI\",\"ignored_columns\":[],\"ignore_const_cols\":true,\"activation\":\"Rectifier\",\"hidden\":[50,50],\"epochs\":\"0.1\",\"variable_importances\":true,\"score_each_iteration\":false,\"checkpoint\":\"\",\"use_all_factor_levels\":true,\"standardize\":true,\"train_samples_per_iteration\":-2,\"adaptive_rate\":true,\"input_dropout_ratio\":0,\"l1\":0,\"l2\":0,\"loss\":\"Automatic\",\"distribution\":\"AUTO\",\"huber_alpha\":0.9,\"score_interval\":5,\"score_training_samples\":10000,\"score_validation_samples\":0,\"score_duty_cycle\":0.1,\"stopping_rounds\":5,\"stopping_metric\":\"AUTO\",\"stopping_tolerance\":0,\"max_runtime_secs\":0,\"autoencoder\":false,\"categorical_encoding\":\"AUTO\",\"pretrained_autoencoder\":\"\",\"overwrite_with_best_model\":true,\"target_ratio_comm_to_comp\":0.05,\"seed\":-1,\"rho\":0.99,\"epsilon\":1e-8,\"nesterov_accelerated_gradient\":true,\"max_w2\":3.4028235e+38,\"initial_weight_distribution\":\"UniformAdaptive\",\"regression_stop\":0.000001,\"diagnostics\":true,\"fast_mode\":true,\"force_load_balance\":true,\"single_node_mode\":false,\"shuffle_training_data\":false,\"missing_values_handling\":\"MeanImputation\",\"quiet_mode\":false,\"sparse\":false,\"col_major\":false,\"average_activation\":0,\"sparsity_beta\":0,\"max_categorical_features\":2147483647,\"reproducible\":false,\"export_weights_and_biases\":false,\"mini_batch_size\":1,\"elastic_averaging\":false}"
+    },
+    {
+      "type": "cs",
+      "input": "getModel \"deeplearning-43818188-8c4b-4ef9-b3fb-22562fb902d9\""
+    }
+  ]
+}
